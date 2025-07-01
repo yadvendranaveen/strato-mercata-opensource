@@ -1,6 +1,6 @@
-# Payment Server (CREDIT CARD/ACH)
+# Payment Server (CREDIT CARD/ACH/CRYPTO)
 
-Official BlockApps Credit Card and ACH Payment Server | Powered by Stripe
+Official BlockApps Credit Card, ACH, and Crypto Payment Server | Powered by Stripe and MetaMask
 
 ## PlantUML for docker-run.sh
 Paste the following to planttext.com to see the sequence diagram of docker-run.sh logic
@@ -38,6 +38,21 @@ endif;
 stop
 @enduml
 ```
+
+## Payment Methods
+
+### Stripe (Credit Card/ACH)
+- Credit card payments with instant confirmation
+- ACH bank transfers with delayed confirmation
+- Seller onboarding and account management
+- Automatic fee calculation and processing
+
+### MetaMask (Crypto)
+- ETH and USDC payments
+- Real-time price conversion for ETH
+- Direct blockchain transactions
+- Seller wallet management
+- Support for multiple networks (Sepolia testnet, Ethereum mainnet)
 
 ## Endpoints
 
@@ -145,6 +160,38 @@ Cancels the order associated with the given token.
 Get the most recent statuses of the orders associated with a given list of tokens.  
 **Returns** a key/value pair of token to payment status.
 
+---
+### MetaMask Endpoints
+
+##### GET `/metamask/onboarding`
+Serves the MetaMask onboarding page where sellers can connect their wallet.
+
+##### POST `/metamask/onboarding`
+Completes the onboarding process by storing seller's wallet address and supported tokens.
+
+##### GET `/metamask/onboarding/status?:username`
+Checks if a seller has completed MetaMask onboarding.
+
+##### GET `/metamask/checkout`
+Serves the checkout page where buyers can select payment method and complete transaction.
+
+##### GET `/metamask/tx/params?:checkout_total&:currency&:username`
+Generates transaction parameters for MetaMask payment.
+
+##### POST `/metamask/checkout`
+Completes the checkout process after successful blockchain transaction.
+
+##### GET `/metamask/order/info?:orderHash`
+Retrieves order information for checkout.
+
+##### GET `/metamask/order/status?:orderHash`
+Checks the status of an order.
+
+##### PUT `/metamask/wallet/change`
+Updates a seller's wallet address.
+
+For detailed MetaMask API documentation, see [MetaMask/README.md](MetaMask/README.md).
+
 ## Dependencies
 
 1. Docker Engine v24+ (For dockerized deployment)
@@ -205,4 +252,35 @@ The payment server uses `jest` as its testing framework. In order to run the tes
 ```
 
 **It is highly recommended to use a separate database for testing purposes**. Afterwards, simply run `npm run test`.
+
+### Running Specific Tests
+
+To run only MetaMask integration tests:
+```bash
+npm test -- tests/metamask.test.js
+```
+
+To run only Stripe integration tests:
+```bash
+npm test -- tests/stripe.test.js
+```
+
+## Architecture
+
+The payment server supports multiple payment methods through a modular architecture:
+
+1. **Payment Service Interface**: Common interface for all payment methods
+2. **Stripe Integration**: Traditional fiat payment processing
+3. **MetaMask Integration**: Cryptocurrency payment processing
+4. **Database Layer**: PostgreSQL for storing payment and user data
+5. **Blockchain Integration**: Smart contract interactions for asset transfers
+
+## Security
+
+- All endpoints use proper authentication and authorization
+- Input validation and sanitization
+- SQL injection prevention through parameterized queries
+- Secure handling of sensitive payment data
+- Rate limiting and error handling
+- Comprehensive logging for audit trails
 
