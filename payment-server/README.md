@@ -283,4 +283,3 @@ The payment server supports multiple payment methods through a modular architect
 - Secure handling of sensitive payment data
 - Rate limiting and error handling
 - Comprehensive logging for audit trails
-
