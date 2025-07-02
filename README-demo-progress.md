@@ -38,8 +38,6 @@
 ## 5. OAuth & Dummy Server
 - Created a `dummy-oauth.js` Express server to mock the OpenID discovery endpoint for local/demo use.
 - Updated `.env` and config to point to the dummy OAuth server.
-- Addressed Docker networking by using `host.docker.internal` for OAuth discovery URL.
-- Added logic to payment-server to bypass OAuth if config is missing or disabled.
 
 ---
 
@@ -51,44 +49,28 @@
   - Checkout
   - Wallet management
   - Order status
-- Updated frontend (`checkout.js`) for MetaMask payment flow.
 - Ensured Docker and deployment configs included MetaMask.
 - Added test suite and documentation for MetaMask integration.
-- Updated main README and created a demo setup guide.
 
----
-
-## 7. Mocking & Bypassing External Dependencies
-- Mocked or bypassed all non-essential services (OAuth, Strato, etc.) for demo.
-- Patched code to:
-  - Return mock tokens and users if OAuth is disabled.
-  - Return mock Strato user if Strato is not available.
-  - Handle missing or dummy JWT tokens gracefully.
-- Disabled SSL for Postgres connection to match Docker default settings.
-
----
-
-## 8. Key Troubleshooting Steps & Fixes
-- Fixed YAML indentation and mapping errors in `config.yaml`.
+## 7. Key Troubleshooting Steps & Fixes
 - Ensured all required environment variables were set in `.env` and Docker Compose.
-- Patched `helpers/oauthHelper.js` to:
-  - Bypass OAuth if config is missing.
-  - Return mock tokens and users for demo.
-  - Handle invalid JWT tokens.
-- Patched `helpers/oauth.js` to handle mock admin user creation.
-- Disabled SSL for Postgres by setting `PGSSLMODE=disable` or equivalent.
+- Disabled SSL for Postgres in code for testing purposes.
 
----
 
-## 9. Final Working Demo
-- Payment-server starts up in Docker Compose with all dependencies mocked or in test mode.
-- MetaMask integration is enabled and testable via API or frontend.
-- No real payments or production keys are used.
-- All errors related to missing config, OAuth, Strato, and Postgres SSL are resolved.
+## Test Steps
 
----
+Step 1: Seller Onboarding
+1. Open browser to `http://localhost:8018/metamask/onboarding`
+2. Connect MetaMask wallet
+3. Select supported tokens (ETH, USDC)
+4. Complete onboarding
 
-## 10. Remaining Notes
-- For a real deployment, re-enable OAuth, Strato, and production keys.
-- For a local demo, keep all mock/test settings and dummy endpoints.
-- Documented all changes and troubleshooting steps for future reference or handoff. 
+Step 2: Create Test Product
+
+
+Step 3: Buyer Checkout
+1. Navigate to checkout page
+2. Select MetaMask payment
+3. Choose ETH or USDC
+4. Complete transaction in MetaMask
+5. Show successful completion
