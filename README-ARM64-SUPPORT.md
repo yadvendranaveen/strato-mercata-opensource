@@ -91,6 +91,20 @@ docker run -it --rm -v $(pwd):/strato-platform strato-buildbase:lts-22.4-arm64 \
   bash -c "cd /strato-platform/strato && stack --system-ghc --no-install-ghc build"
 ```
 
+### Test Build (Dry Run)
+To verify the setup without actually building:
+```bash
+docker run -it --rm -v $(pwd):/strato-platform strato-buildbase:lts-22.4-arm64 \
+  bash -c "cd /strato-platform/strato && stack --system-ghc --no-install-ghc build --dry-run"
+```
+
+### Build Specific Package
+To build only a specific package:
+```bash
+docker run -it --rm -v $(pwd):/strato-platform strato-buildbase:lts-22.4-arm64 \
+  bash -c "cd /strato-platform/strato && stack --system-ghc --no-install-ghc build core/strato-conf"
+```
+
 ## Usage Instructions
 
 ### For Apple Silicon (ARM64) Users
