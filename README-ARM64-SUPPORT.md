@@ -69,19 +69,33 @@ build_buildbase_arm64:
 
 ### Challenge 1: GHC Version Mismatch
 - **Problem:** Initially installed GHC 9.4.7, but Stack expected 9.6.3
+- **Error:** `UnwantedCompilerVersion` and `expected minor version match or newer with ghc-9.6.3`
 - **Solution:** Updated Dockerfile to download GHC 9.6.3 tarball for ARM64
 
 ### Challenge 2: Docker-in-Docker Conflicts
 - **Problem:** Stack tried to use Docker even when running inside Docker
+- **Error:** `Docker CLI not found` or `docker: command not found`
 - **Solution:** Commented out `docker:` section in `stack.yaml`
 
 ### Challenge 3: GHC Tarball Directory Structure
 - **Problem:** GHC tarball extracts to different directory names than expected
+- **Error:** `./configure: No such file or directory` during GHC installation
 - **Solution:** Used correct extracted directory name: `ghc-9.6.3-aarch64-unknown-linux`
 
 ### Challenge 4: Stack Not Using System GHC
 - **Problem:** Even with `system-ghc: true`, Stack tried to download its own GHC
+- **Error:** Stack downloading `ghc-tinfo6-9.8.4` instead of using system GHC 9.6.3
 - **Solution:** Used `--system-ghc --no-install-ghc` flags and ensured correct GHC version
+
+### Challenge 5: Wrong Architecture Detection
+- **Problem:** Stack attempting to install x86_64 GHC on ARM64 system
+- **Error:** `ghc-tinfo6-9.6.7.temp/ghc-9.6.7-x86_64-unknown-linux/` (wrong architecture)
+- **Solution:** Ensured proper ARM64 GHC installation and Stack configuration
+
+### Challenge 6: Build Target Issues
+- **Problem:** Stack not finding packages when run from wrong directory
+- **Error:** `The specified targets matched no packages. Perhaps you need to run stack init?`
+- **Solution:** Ensured Stack runs from `/strato-platform/strato` directory with correct project structure
 
 ## Final Working Solution
 
