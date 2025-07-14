@@ -4,6 +4,7 @@ import config from "../load.config.js";
 
 const options = { config };
 
+// Yadvendra: Adding error context to the oauth initialization
 let oauth = null;
 
 const getOAuth = async () => {
